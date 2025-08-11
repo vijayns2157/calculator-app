@@ -1,0 +1,37 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  DOCKER_IMAGE: vijayshinde2157/calculator-app
+  KUBE_NAMESAPCE: calculator-app
+
+build:
+  stage: build
+  image: docker:latest
+  services:
+  - docker:dind
+  variables:
+    DOCKER_DRIVER: overlay2
+  before_script:
+  - apk add --no-cache docker-cli
+  script:
+    - docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD"
+    - docker build -t $DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA .
+    - docker push $DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA
+
+deploy:
+  stage: deploy
+  image: alpine:latest
+  before_script:
+  - apk add --no-cache curl bash kubectl gettext
+  script:
+    - kubectl config set-cluster k8s --server=$KUBE_API_URL
+    - kubectl config set-credentials gitlab --token=$KUBE_TOKEN
+    - kubectl config set-context gitlab --cluster=k8s --user=gitlab --namespace=$KUBE_NAMESPACE
+    - kubectl config use-context gitlab
+    - export DOCKER_IMAGE=vijayshinde2157/calculator-app
+    - envsubst < deployment.yml > updated-deployment.yml
+    - kubectl apply -f updated-deployment.yml
+    - kubectl apply -f updated-deployment.yml
+    - kubectl apply -f service.yml
