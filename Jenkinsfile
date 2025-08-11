@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'docker:latest'
-            args '-u root --privileged' // Needed for Docker-in-Docker
-        }
-    }
+    agent any
 
     parameters {
         string(name: 'KUBE_NAMESPACE', defaultValue: 'default', description: 'Kubernetes namespace to deploy to')
@@ -85,4 +80,5 @@ pipeline {
         }
     }
 }
+
 
