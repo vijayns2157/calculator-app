@@ -49,18 +49,6 @@ pipeline {
                 '''
             }
         }
-
-        #stage('Configure kubectl') {
-        #   steps {
-        #       sh '''
-        #       kubectl config set-cluster k8s --server=$KUBE_API_URL
-        #       kubectl config set-credentials jenkins --token=$KUBE_TOKEN
-        #       kubectl config set-context jenkins --cluster=k8s --user=jenkins --namespace=${KUBE_NAMESPACE}
-        #       kubectl config use-context jenkins
-        #       '''
-        #   }
-        #}
-
         stage('Prepare Deployment') {
             steps {
                 sh '''
@@ -97,3 +85,4 @@ pipeline {
         }
     }
 }
+
