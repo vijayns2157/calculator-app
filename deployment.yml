@@ -25,3 +25,22 @@ spec:
           limits:
             cpu: "250m"
             memory: "256Mi"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: calculator-app-service
+  labels:
+    app.kubernetes.io/name: calculator-app
+spec:
+  type: NodePort
+  selector:
+    app: calculator-app
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+      nodePort: 30007
+  sessionAffinity: None
