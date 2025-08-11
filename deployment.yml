@@ -14,6 +14,14 @@ spec:
     spec:
       containers:
       - name: calculator-app
-        image: vijayshinde2157/calculator-app:latest
+        image: ${DOCKER_IMAGE}
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5000
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "250m"
+            memory: "256Mi"
