@@ -19,7 +19,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git credentialsId: 'github-creds-id', url: 'https://github.com/your/repo.git'
+                git credentialsId: 'github-creds-id', url: 'https://github.com/vijayns2157/calculator-app.git'
             }
         }
         stage('Use Minikube Docker') {
@@ -80,5 +80,6 @@ pipeline {
         }
     }
 }
+
 
 
