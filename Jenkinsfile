@@ -1,6 +1,10 @@
 pipeline {
-    agent any
-
+    agent {
+        docker {
+            image 'vijayshinde2157/jenkins-tools:latest'
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
     parameters {
         string(name: 'KUBE_NAMESPACE', defaultValue: 'default', description: 'Kubernetes namespace to deploy to')
         string(name: 'IMAGE_TAG', defaultValue: 'latest', description: 'Docker image tag to deploy')
@@ -80,3 +84,4 @@ pipeline {
         }
     }
 }
+
